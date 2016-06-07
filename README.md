@@ -10,13 +10,14 @@
 
 ##Description
 
-A sample simulates Navisworks timeline with [Autodesk Forge Viewer](http://developer-autodesk.github.io/) 
+A sample simulates Navisworks timeline with [Autodesk Forge Viewer](http://developer-autodesk.github.io/) . This is the [demo video](http://autode.sk/1WCO9ah). 
 
 ##Dependencies
 
 * The ["Demo task"](https://github.com/Developer-Autodesk/view.and.data-timeliner-mvc-sample/blob/master/Timeliner/Content/demotask.txt) of this sample depends on the sample model. The model is available at  [gatehouse.nwd](https://github.com/Developer-Autodesk/client-timeliner-view.and.data.api/blob/master/gatehouse.nwd)  
 * The MVC project would need to update the packages by [NuGet](https://www.nuget.org/). The simplest way is right click of the project>>"Manage NuGet Packages for Solution" >> "Restore" (top right of dialog)
 * The demo is tested with Visual Studio 2012. It should work with higher versions, but has not yet been tested.
+
 
 ##Setup/Usage Instructions
 
