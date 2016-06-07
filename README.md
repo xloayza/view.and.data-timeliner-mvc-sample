@@ -1,19 +1,22 @@
-
+ 
 #Client sample - timeliner
 
-[![LMV](https://img.shields.io/badge/View%20%26%20Data%20API-v1.2.23-green.svg)](http://developer-autodesk.github.io/)
-![Platforms](https://img.shields.io/badge/platform-windows%20%7C%20osx%20%7C%20linux-lightgray.svg)
+[![Forge Viewer](https://img.shields.io/badge/Forge%20Viewer-V2.7-green.svg)](http://developer-autodesk.github.io/)
+[![Platforms](https://img.shields.io/badge/platform-windows7%7CWindows8%7CWindows10-orange.svg)](https://www.microsoft.com/en-us/windows)
+[![Visual Studio 2012](https://img.shields.io/badge/Visual%20Studio-2012-yellow.svg)](https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx)
+
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://opensource.org/licenses/MIT)
 
 
 ##Description
 
-A sample simulates Navisworks timeline with Autodesk Viewer
+A sample simulates Navisworks timeline with [Autodesk Forge Viewer](http://developer-autodesk.github.io/) 
 
 ##Dependencies
 
-* The "Demo task" of this sample depends on the sample model, it is available at  [gatehouse.nwd](https://github.com/Developer-Autodesk/client-timeliner-view.and.data.api/blob/master/gatehouse.nwd)  
-
+* The ["Demo task"](https://github.com/Developer-Autodesk/view.and.data-timeliner-mvc-sample/blob/master/Timeliner/Content/demotask.txt) of this sample depends on the sample model. The model is available at  [gatehouse.nwd](https://github.com/Developer-Autodesk/client-timeliner-view.and.data.api/blob/master/gatehouse.nwd)  
+* The MVC project would need to update the packages by [NuGet](https://www.nuget.org/). The simplest way is right click of the project>>"Manage NuGet Packages for Solution" >> "Restore" (top right of dialog)
+* The demo is tested with Visual Studio 2012. It should work with higher versions, but has not yet been tested.
 
 ##Setup/Usage Instructions
 
@@ -29,7 +32,7 @@ A sample simulates Navisworks timeline with Autodesk Viewer
       * [delete all] : delete all tasks
       * [choose task data] : load an existing task file on client (currently csv, or txt)
       * [New Model]: load a new model. it allows the user to choose a local model and upload it to view service, and the web page can display the new model. The user can work with Timeliner with the new model
-      * [demo task] : load an existing task file on server. In this case, it is timelinerdata.txt in Content folder. It can only be useful for the demo model [gatehouse.nwd](https://github.com/Developer-Autodesk/client-timeliner-view.and.data.api/blob/master/gatehouse.nwd). If current model is different, the code will pop out an error message. 
+      * [demo task] : load an existing task file on server. In this case, it is [demotask.txt](https://github.com/Developer-Autodesk/view.and.data-timeliner-mvc-sample/blob/master/Timeliner/Content/demotask.txt). It can only be useful for the demo model [gatehouse.nwd](https://github.com/Developer-Autodesk/client-timeliner-view.and.data.api/blob/master/gatehouse.nwd). If current model is different, the code will pop out an error message. 
       * [play] : starts a simulation process. Currently, only 'construction' of task type is implemented
       * [Pause]: pause a simulation process
       * [End]:   stop a simulation process
@@ -46,5 +49,6 @@ This sample is licensed under the terms of the [MIT License](http://opensource.o
 ##Written by 
 
 Xiaodong Liang
+Autodesk Forge
 
 
