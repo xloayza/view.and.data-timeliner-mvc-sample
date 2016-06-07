@@ -20,12 +20,6 @@ var adnViewerMng = null;
 //handle of the viewer 
 var viewer3D;
 
- //node collection of the viewer
-var currNodes = [];
-
-//current selected node
-var currNode = null;
-
 //id of current selected node
 var curDbId;
 
@@ -38,6 +32,17 @@ var playCurNode = null;
 //current urn
 var _currentURN = "";
 
+
+var NodesIDCollection = [];
+var NodesNameCollection = [];
+
+
+var playCurrentKeyIndex = 0;
+var playTotalKeyCount = 0;
+var timeHandle = null;
+var globalPlayDic = null;
+
+var totolStr ='';
 //make specific model item isolate
 function seeModelItem(modelId) {
 
@@ -48,19 +53,12 @@ function seeModelItem(modelId) {
 
 ////////help functions//////////////
 //show specific model item
-function showOneNode() {
-    if (playCurNode != null && playCurNode.dbId > 0) {
-        viewer3D.show(playCurNode);
-        console.log(playCurNode.dbId);
-    }
-}
-
-//show one node
-function showOneNode1(thisNode) {
-    if (thisNode != null && thisNode.dbId > 0) {
-        viewer3D.show(thisNode);
-    }
-}
+function showOneNode(dbId) {
+    if (dbId > 0) {
+         
+        viewer3D.show(dbId);
+     }
+}  
 
 //show all model items
 function resetIsolate() {
@@ -84,26 +82,77 @@ function sortOnKeys(dict) {
     return tempDict;
 }
 
-//get model tree
-function getObjectTreeCB(result) {
+//generate tree in new version of LMV
+function generateTree(instanceTree){
 
     //clear tree control
     var nd = [];
-    for (var i in w2ui['divModelTree'].nodes)
+   for (var i in w2ui['divModelTree'].nodes)
         nd.push(w2ui['divModelTree'].nodes[i].id);
-    w2ui['divModelTree'].remove.apply(w2ui['divModelTree'], nd);
+   w2ui['divModelTree'].remove.apply(w2ui['divModelTree'], nd);
+
 
     //to simplify, add the first level objects only
-    geometryItems_children = result.children;
-    currNodes = [];
-    for (i = 0; i < geometryItems_children.length; i++) {
+   var rootId = instanceTree.getRootId();
+   var rootName = instanceTree.getNodeName(rootId);
 
-        currNodes.push(geometryItems_children[i]);
+    //this is to dump a demo data of time liner
+    //var childCount = 0;
+     
+   NodesIDCollection = [];
+   NodesNameCollection = [];
 
-        var idStr = "id" + (w2ui['divModelTree'].nodes.length + 1).toString();
-        w2ui['divModelTree'].add([{ id: w2ui['divModelTree'].nodes.length + 1, text: geometryItems_children[i].name, img: 'icon-page' }]);
-    }
+    instanceTree.enumNodeChildren(rootId, function (childId) {
+
+        var childName = instanceTree.getNodeName(childId); 
+
+        NodesIDCollection.push(childId);    
+        NodesNameCollection.push(childName);
+
+        //add the a tree node to the tree
+        var itotolStrdStr = "id" + (w2ui['divModelTree'].nodes.length + 1).toString();
+        w2ui['divModelTree'].add([{ id: w2ui['divModelTree'].nodes.length + 1, text: childName, img: 'icon-page' }]);
+
+        //this is to dump a demo data of time liner
+        //*****************
+        // randomMoth = Math.floor((Math.random() * 10) + 1);
+        //var randomDate = Math.floor((Math.random() * 20) + 1);
+
+        //totolStr += 'newT' + childCount + ',' +
+        //            randomDate + '/' + randomMoth + '/' + '2014' + ',' +
+        //            'cosntruct' + ',' +
+        //            childId + ',' +
+        //            childName + '\n';
+
+        //newT0,06/01/2014,06/01/2014,cosntruct,23,A393_SERVICE_PIT_E30
+        //childCount++;
+        //******************
+    });
 }
+
+
+////get model tree in old version of LMV
+//function getObjectTreeCB(result) {
+
+//    //clear tree control
+//    var nd = [];
+//    for (var i in w2ui['divModelTree'].nodes)
+//        nd.push(w2ui['divModelTree'].nodes[i].id);
+//    w2ui['divModelTree'].remove.apply(w2ui['divModelTree'], nd);
+
+
+//    //to simplify, add the first level objects only
+//    geometryItems_children = result.root.children;
+//    currNodes = [];
+//    for (i = 0; i < geometryItems_children.length; i++) {
+
+//        currNodes.push(geometryItems_children[i]);
+
+//        var idStr = "id" + (w2ui['divModelTree'].nodes.length + 1).toString();
+//        w2ui['divModelTree'].add([{ id: w2ui['divModelTree'].nodes.length + 1, text: geometryItems_children[i].name, img: 'icon-page' }]);
+//    }
+//}
+ 
 
 /////end help function/////////////
 
@@ -119,12 +168,17 @@ function getObjectTreeCB(result) {
         onClick: function (event) {
             console.log('item ' + event.target + ' is clicked.');
             if (event.target == 'btnRefresh') {
-                if(viewer3D!=null)
-                  viewer3D.getObjectTree(getObjectTreeCB);
-            } else if (event.target == 'btnShowAll') {
-                if (viewer3D != null)
-                    viewer3D.showAll();;
-            } 
+                if (viewer3D != null) { 
+
+                    var instanceTree = viewer3D.model.getData().instanceTree;
+                    generateTree(instanceTree);
+                }
+            }
+            else if (event.target == 'btnShowAll') {
+                 
+                viewer3D.showAll();
+            }
+           
         }
     });
 
@@ -136,30 +190,21 @@ function getObjectTreeCB(result) {
             console.log(event.target);
             var index = parseInt(event.target);
             if (index > -1) {
-                currNode = currNodes[index];
-                var selectedObjectdbId = currNode.dbId;
-                curDbId = currNode.dbId;
-                viewer3D.isolateById(selectedObjectdbId);
+                 viewer3D.isolateById(NodesIDCollection[index]);
                 
             }
         },
         onContextMenu: function (event) {
-            console.log(event);
-
+    
             viewer3D.showAll();
             var taskIndex = w2ui['divTBContainer'].getSelection();
             if (taskIndex > 0) {
-
                 console.log(event.target);
                 var modelIndex = parseInt(event.target);
                 if (modelIndex > -1) {
-                    currNode = currNodes[modelIndex - 1];
-                    var selectedObjectdbId = currNode.dbId;
-                    curDbId = currNode.dbId;
-                    var xx = "<a href=\"javascript:void(0);\" onmousedown=\"seeModelItem(" + curDbId + ");\" onmouseup=\"resetIsolate();\">" + currNode.name + "</a>";
-                    w2ui.divTBContainer.records[taskIndex - 1].gridmodel = xx;
+                    var triggerStr = "<a href=\"javascript:void(0);\" onmousedown=\"seeModelItem(" + NodesIDCollection[modelIndex - 1] + ");\" onmouseup=\"resetIsolate();\">" + NodesNameCollection[modelIndex - 1] + "</a>";
+                    w2ui.divTBContainer.records[taskIndex - 1].gridmodel = triggerStr;
                     w2ui.divTBContainer.refresh();
-
                 }
             }
             else {
@@ -185,10 +230,6 @@ function getObjectTreeCB(result) {
 
     w2ui['divModelPanel'].content('top', w2ui['divModelButtons']);
     w2ui['divModelPanel'].content('main', w2ui['divModelTree']);
-
-
-   
-
 
     //task table grid
     var _taskType = [
@@ -275,11 +316,11 @@ function getObjectTreeCB(result) {
             else {
                 taskType = 2;
             }
-            var xx = "<a href=\"javascript:void(0);\" onmousedown=\"seeModelItem(" + data_row[4] + ")\" onmouseup=\"resetIsolate();\">" + data_row[5] + "</a>";
+            var triggerStr = "<a href=\"javascript:void(0);\" onmousedown=\"seeModelItem(" + data_row[4] + ")\" onmouseup=\"resetIsolate();\">" + data_row[5] + "</a>";
 
             w2ui['divTBContainer'].add({
                 recid: len + 1, gridtaskid: len + 1,
-                gridtaskname: data_row[0], gridstadate: data_row[1], gridenddate: data_row[2], gridtasktype: taskType, gridmodel: xx
+                gridtaskname: data_row[0], gridstadate: data_row[1], gridenddate: data_row[2], gridtasktype: taskType, gridmodel: triggerStr
             });
 
         }
@@ -303,7 +344,8 @@ function getObjectTreeCB(result) {
     });
 
 
-    ////upload and view a new model
+////upload, register and view a new model
+///////////////////////////////
     $("#myInputModel").change(function (evt) {
         var files = evt.target.files; // FileList object
         var f = files[0];
@@ -328,9 +370,8 @@ function getObjectTreeCB(result) {
         $("#taskdiv")[0].style.position = "absolute";
         $("#taskdiv")[0].style.left = "20px";
         $("#taskdiv")[0].style.top = "60px";
-        $("#taskdiv")[0].style.zIndex = 10000
-        
-
+        $("#taskdiv")[0].style.zIndex = 10000  
+ 
 
 
         adnViewerMng.closeDocument();
@@ -361,7 +402,8 @@ function getObjectTreeCB(result) {
                     console.log('File upload successful:');
                     console.log(response);
 
-                    var fileId = response.objects[0].id;
+                    //v2 the response param is objectId
+                    var fileId = response.objectId;
 
                     var registerResponse =
                         viewDataClient.register(fileId);
@@ -462,12 +504,8 @@ function getObjectTreeCB(result) {
         }, 2000);
     };
 
-   ////////
+ ///////////////////////////////
 
-    var playCurrentKeyIndex = 0;
-    var playTotalKeyCount = 0;
-    var timeHandle = null;
-    var globalPlayDic = null;
 
     function myTimer() { 
         
@@ -485,11 +523,12 @@ function getObjectTreeCB(result) {
         
          for (idindex = 0; idindex < ids.length; idindex++) {
                 var id = ids[idindex];
-                for (i = 0; i < currNodes.length; i++) {
-                    var node = currNodes[i];
-                    if (node.dbId == parseInt(id)) {
-                        showOneNode1(node);
-                        divStr += "<h4>" + node.name + "</h4>\n"; 
+                for (i = 0; i < NodesIDCollection.length; i++) {
+                    var nodeid = NodesIDCollection[i];
+                    //if (node.dbId == parseInt(id)) {
+                    if (nodeid == parseInt(id)) {
+                        showOneNode(nodeid);
+                        divStr += "<h4>" + NodesNameCollection[i] + "</h4>\n";
                     }
                 }
          }
@@ -581,7 +620,9 @@ function getObjectTreeCB(result) {
                 // because the existing file of task is for the default model only
                 if (_currentURN == defaultUrn) {
                     var demotaskscontent = document.getElementById('ExistingTasks').value;
-                    demotaskscontent = demotaskscontent.replace(/<br>/g, "\r\n");
+                    var re = new RegExp('<br>', 'g');
+
+                    demotaskscontent = demotaskscontent.replace(re,"\r\n");
                     importTasks(demotaskscontent);
                     console.log("btnexistingfile");
                 }
@@ -633,9 +674,9 @@ function getObjectTreeCB(result) {
                         globalPlayDic = getTableData();
 
                         //isolate all
-                        for (i = 0; i < currNodes.length; i++) {
-                            var node = currNodes[i];
-                            viewer3D.isolateById(node.dbId);
+                        for (i = 0; i < NodesIDCollection.length; i++) {
+                            var nodeid = NodesIDCollection[i];
+                            viewer3D.isolateById(nodeid);
                         }
 
                         playCurrentKeyIndex = 0;
@@ -707,7 +748,7 @@ function getObjectTreeCB(result) {
     $('#divLayout').w2layout({
         name: 'divLayout',
         panels: [
-            { type: 'top', size: 50, resizable: false, style: pstyleTitle, content: '<img src="adskimg.png"/>                   ADN Timeliner Sample' },
+            { type: 'top', size: 50, resizable: false, style: pstyleTitle, content: '<img src="forge.png"/>                   Forge Timeliner Sample' },
             { type: 'main', style: pstyle, content: 'main' },             
             { type: 'right', size: 200, resizable: true, style: pstyle },
             { type: 'bottom', size: 250, resizable: true, style: pstyle }

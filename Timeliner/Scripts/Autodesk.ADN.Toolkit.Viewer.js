@@ -177,8 +177,11 @@ Autodesk.ADN.Toolkit.Viewer.AdnViewerManager = function (
                         Autodesk.Viewing.GEOMETRY_LOADED_EVENT,
 
                         function(event) {
-                            _viewer.fitToView(false); 
-                            _viewer.getObjectTree(getObjectTreeCB);
+                            _viewer.fitToView(false);
+
+                            var instanceTree = _viewer.model.getData().instanceTree;
+                            generateTree(instanceTree); 
+                            //_viewer.getObjectTree(getObjectTreeCB);
                         });
 
                     if (onViewerInitialized)

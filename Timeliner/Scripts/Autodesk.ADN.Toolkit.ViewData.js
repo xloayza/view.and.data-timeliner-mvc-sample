@@ -115,7 +115,7 @@ Autodesk.ADN.Toolkit.ViewData.AdnViewDataClient = function (
         var xhr = new XMLHttpRequest();
 
         xhr.open('POST',
-            _baseUrl + "/oss/v1/buckets",
+            _baseUrl + "/oss/v2/buckets",
             false);
 
         xhr.setRequestHeader(
@@ -234,7 +234,7 @@ Autodesk.ADN.Toolkit.ViewData.AdnViewDataClient = function (
         var xhr = new XMLHttpRequest();
 
         xhr.open('PUT',
-            _baseUrl + '/oss/v1/buckets/' + bucketKey + '/objects/' + objectKey,
+            _baseUrl + '/oss/v2/buckets/' + bucketKey + '/objects/' + objectKey,
             true);
 
         xhr.setRequestHeader(
