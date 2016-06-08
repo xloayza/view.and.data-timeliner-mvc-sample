@@ -1,8 +1,8 @@
  
-#Client sample - timeliner
+#Viewer client sample - timeliner
 
-[![Forge Viewer](https://img.shields.io/badge/Forge%20Viewer-V2.7-green.svg)](http://developer-autodesk.github.io/)
-[![Platforms](https://img.shields.io/badge/platform-windows7%7CWindows8%7CWindows10-orange.svg)](https://www.microsoft.com/en-us/windows)
+[![Viewer](https://img.shields.io/badge/Forge%20Viewer-V2.7-green.svg)](http://developer-autodesk.github.io/)
+[![Platforms](https://img.shields.io/badge/platform-Windows-orange.svg)](https://www.microsoft.com/en-us/windows)
 [![Visual Studio 2012](https://img.shields.io/badge/Visual%20Studio-2012-yellow.svg)](https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx)
 
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://opensource.org/licenses/MIT)
@@ -10,7 +10,7 @@
 
 ##Description
 
-A sample simulates Navisworks timeline with [Autodesk Forge Viewer](http://developer-autodesk.github.io/) . This is the [demo video](http://autode.sk/1WCO9ah). 
+A sample simulates Navisworks timeline with [Viewer](https://developer.autodesk.com/api/view-and-data-api/). This is the [demo video](http://autode.sk/1WCO9ah). 
 
 ##Dependencies
 
@@ -21,7 +21,7 @@ A sample simulates Navisworks timeline with [Autodesk Forge Viewer](http://devel
 
 ##Setup/Usage Instructions
 
-* Get your consumer key and secret key at https://developer.autodesk.com/
+* Get your consumer key and secret key at [Forge Platform](https://developer.autodesk.com/)
 * With this key pair, use other workflow samples, for example, [this winform workflow sample](https://github.com/Developer-Autodesk/workflow-dotnet-winform-view.and.data.api) to create bucket, upload demo model and get the models URN for latter usage.
 * Open the solution in Visual Studio 2012, replace the place holder in Credentials.cs with your own consumer key and secret key, bucket name and URN which are the ones you created in step 2. The URN string should start with "urn:". 
 * Build and run the project, browse to the website with latest version of Chrome or Firefox. You may need to clean up cache of browser before running. The default model will be loaded. object tree is generated.  
@@ -49,7 +49,6 @@ This sample is licensed under the terms of the [MIT License](http://opensource.o
 
 ##Written by 
 
-Xiaodong Liang
-Autodesk Forge
+Xiaodong Liang (Forge Partner Development)
 
 
