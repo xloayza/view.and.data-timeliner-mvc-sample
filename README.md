@@ -1,12 +1,10 @@
  
-#Viewer client sample - timeliner
+#Viewer Timeliner MVC Sample - Windows app
 
 [![Viewer](https://img.shields.io/badge/Forge%20Viewer-V2.7-green.svg)](http://developer-autodesk.github.io/)
 [![Platforms](https://img.shields.io/badge/platform-Windows-orange.svg)](https://www.microsoft.com/en-us/windows)
 [![Visual Studio 2012](https://img.shields.io/badge/Visual%20Studio-2012-yellow.svg)](https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx)
-
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://opensource.org/licenses/MIT)
-
 
 ##Description
 
