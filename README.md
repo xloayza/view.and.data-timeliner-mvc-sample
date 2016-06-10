@@ -8,7 +8,7 @@
 
 ##Description
 
-A sample simulates Navisworks timeline with [Viewer](https://developer.autodesk.com/api/view-and-data-api/). This is the [demo video](http://autode.sk/1WCO9ah). 
+A sample simulates Navisworks timeline with [Viewer](https://developer.autodesk.com/en/docs/viewer/v2/overview/). This is the [demo video](http://autode.sk/1WCO9ah). 
 
 ##Dependencies
 
